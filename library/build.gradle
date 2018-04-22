@@ -23,3 +23,16 @@ android {
 dependencies {
     provided 'com.github.maxwell-nc:ReactiveLite:1.3'
 }
+
+//jCenter
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    repoName = 'Android'//repo名
+    userOrg = 'maxwell-nc'//用户名
+    groupId = 'com.maxwell.nc'//第1部分
+    artifactId = 'TinyBus'////第2部分项目名
+    publishVersion = '1.0'//版本号
+    desc = 'A Tiny ReactiveX EventBus base on my lite reactive lib.'
+    website = 'https://github.com/maxwell-nc/TinyBus'
+}

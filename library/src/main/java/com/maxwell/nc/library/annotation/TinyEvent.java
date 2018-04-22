@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 标记事件的注解<br/>
+ * 标记事件的注解<br>
  * com.maxwell.nc.library.annotation.TinyEvent
  */
 @Target({ElementType.METHOD})
