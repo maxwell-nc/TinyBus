@@ -16,7 +16,7 @@ A Tiny ReactiveX EventBus base on [my lite reactive lib](https://github.com/maxw
 ```
     compile 'com.maxwell.nc:ReactiveLite:1.3'//基于此库开发
     compile 'com.maxwell.nc:TinyBus:1.0'
-    annotationProcessor 'com.maxwell.nc:TinyBus-Processor:1.0'//编译时注解处理器
+    annotationProcessor 'com.maxwell.nc:TinyBus-Processor:1.1'//编译时注解处理器
 ```
 
 ## 用法 Usage
@@ -39,7 +39,7 @@ A Tiny ReactiveX EventBus base on [my lite reactive lib](https://github.com/maxw
 
 2.增加事件接收方法：
 
-- 方法名随意
+- 方法名随意(Processor1.1支持接收方法重载)
 - 方法必须为public、不能为static（效率考虑）
 - T为事件类型,用于匹配事件
 - 加上@TinyEvent注解
