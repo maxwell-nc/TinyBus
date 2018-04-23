@@ -9,6 +9,15 @@ A Tiny ReactiveX EventBus base on [my lite reactive lib](https://github.com/maxw
 - 轻量级（含库依赖不超过50kb）
 - 快速（使用编译时注解）
 
+## 依赖 Gradle
+
+目前部署在JCenter方便使用，直接修改build.gradle文件：
+
+```
+    compile 'com.maxwell.nc:ReactiveLite:1.3'//基于此库开发
+    compile 'com.maxwell.nc:TinyBus:1.0'
+    annotationProcessor 'com.maxwell.nc:TinyBus-Processor:1.0'//编译时注解处理器
+```
 
 ## 用法 Usage
 
@@ -58,7 +67,7 @@ Sticky事件用于事件发送时，订阅者还没注册，等到订阅者注�
 ```java
     @TinyEvent(sticky = true)
     public void onEvent(T event) {
-		//处理接收事件
+	//处理接收事件
     }
 ```
 
@@ -66,7 +75,7 @@ Sticky事件需要使用postSticky方法发送，事件发送后会一直缓存�
 
 ```java
     TinyBus.postSticky(event);
-	TinyBus.removeSticky(event);//移除单个
+    TinyBus.removeSticky(event);//移除单个
     TinyBus.removeStickyAll(Event.class);//移除同类型所有
 ```
 
@@ -75,13 +84,13 @@ Sticky事件需要使用postSticky方法发送，事件发送后会一直缓存�
 订阅者执行的线程可以通过注解参数设置：
 
 ```java
-	@TinyEvent(thread = EventThread.IMMEDIATE)
+    @TinyEvent(thread = EventThread.IMMEDIATE)
 ```
 
 其中EventThread提供了4种线程模式：
 
-- **MAIN：**主线程运行
-- **NEW_THREAD：**每个在单独线程运行
-- **COMPUTE：**在一定大小的线程池中运行
-- **IMMEDIATE：**在发送的线程中执行
+- **MAIN：** 主线程运行
+- **NEW_THREAD：** 每个在单独线程运行
+- **COMPUTE：** 在一定大小的线程池中运行
+- **IMMEDIATE：** 在发送的线程中执行
 
