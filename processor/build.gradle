@@ -4,9 +4,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
-
 //jCenter
 apply plugin: 'com.novoda.bintray-release'
 
@@ -15,7 +12,7 @@ publish {
     userOrg = 'maxwell-nc'//用户名
     groupId = 'com.maxwell.nc'//第1部分
     artifactId = 'TinyBus-Processor'////第2部分项目名
-    publishVersion = '1.0'//版本号
+    publishVersion = '1.1'//版本号
     desc = 'A Tiny ReactiveX EventBus base on my lite reactive lib.'
     website = 'https://github.com/maxwell-nc/TinyBus'
 }

@@ -26,7 +26,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.JavaFileObject;
 
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({TinyBusProcessor.EVENT_CLASS_NAME})
 public class TinyBusProcessor extends AbstractProcessor {
 
@@ -130,9 +130,9 @@ public class TinyBusProcessor extends AbstractProcessor {
         writer.writeLn();
 
         for (ExecutableElement method : methodList) {
-            String methodName = method.getSimpleName().toString();
-            logUtils.showLog("generate:" + methodName);
-            writer.writeLn("    private TinyBusSubscriber %sSubscriber;", methodName);
+            String subscriberPrefix = getSubscriberFiledName(method);
+            logUtils.showLog("generate " + subscriberPrefix);
+            writer.writeLn("    private TinyBusSubscriber %s;", subscriberPrefix);
         }
 
         writer.writeLn();
@@ -165,7 +165,7 @@ public class TinyBusProcessor extends AbstractProcessor {
                 }
             }
 
-            writer.writeLn("        %sSubscriber = TinyBus.getDefault().subscribeEvent(\"%s\", %s, %s,", methodName, typeMirror, thread, isSticky);
+            writer.writeLn("        %s = TinyBus.getDefault().subscribeEvent(\"%s\", %s, %s,", getSubscriberFiledName(method), typeMirror, thread, isSticky);
             writer.writeLn("                new EventListener<%s>() {", typeMirror);
             writer.writeLn("                    @Override");
             writer.writeLn("                    public void onEvent(%s event) {", typeMirror);
@@ -180,7 +180,7 @@ public class TinyBusProcessor extends AbstractProcessor {
         writer.writeLn("    public void unRegister() {");
 
         for (ExecutableElement method : methodList) {
-            writer.writeLn("        TinyBus.getDefault().unSubscribeEvent(%sSubscriber);", method.getSimpleName().toString());
+            writer.writeLn("        TinyBus.getDefault().unSubscribeEvent(%s);", getSubscriberFiledName(method));
         }
 
         writer.writeLn("    }");
@@ -188,6 +188,28 @@ public class TinyBusProcessor extends AbstractProcessor {
         writer.write("}");
 
         writer.close();
+    }
+
+    /**
+     * 获取生成的订阅者成员变量名
+     */
+    private String getSubscriberFiledName(ExecutableElement method) {
+        String methodName = method.getSimpleName().toString();
+        VariableElement variableElement = method.getParameters().get(0);//获取方法第一个参数
+        String argClassName = variableElement.asType().toString();
+        char[] argArray = argClassName.toCharArray();
+        for (int i = -1; i < argArray.length - 1; i++) {
+            if (i == -1 || argArray[i] == '.') {
+                int next = i + 1;
+                if (next < argArray.length) {
+                    //.字符下一个字母转换为大写
+                    if (argArray[next] >= 'a' && argArray[next] <= 'z') {
+                        argArray[next] = (char) (argArray[next] - 32);
+                    }
+                }
+            }
+        }
+        return methodName + new String(argArray).replace(".", "") + "Subscriber";
     }
 
 }
